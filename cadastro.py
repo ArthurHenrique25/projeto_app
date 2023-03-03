@@ -31,22 +31,50 @@ entry3.place(x=100, y=270)
 chekbox = customtkinter.CTkCheckBox(master=janela, text="Concordo com os termos")
 chekbox.place(x=100,y=320)
 
-def enviar():
+def salvar_usuario():
+    # ler dados dos campos de entrada
     nome = entry1.get()
+    email = entry2.get()
     senha = entry3.get()
 
-    with open("usuarios.json", "r") as f:
-        usuarios = json.load(f)
+    # criar um dicionário com os dados do usuário
+    usuario = {
+        "nome": nome,
+        "email": email,
+        "senha": senha
+    }
 
-    if nome in usuarios:
-        messagebox.showerror("Erro", f"O usuário '{nome}' já existe!")
+    # salvar o dicionário em um arquivo JSON
+    with open("Users//usuarios.json", "w") as arquivo:
+        json.dump(usuario, arquivo)
+
+    # exibir uma mensagem de confirmação
+    messagebox.showinfo("Cadastro realizado", "Seu cadastro foi salvo com sucesso.")
+
+
+import json
+
+def validar_usuario():
+    # carregar o arquivo JSON
+    with open('Users//usuarios.json', 'r') as arquivo:
+        dados_usuarios = json.load(arquivo)
+
+    # extrair o email do usuário
+    email = entry1.get()
+
+    if email in [usuario["email"] for usuario in dados_usuarios]:
+        # se for válido
+        messagebox.showinfo("Confirmação", f"Email '{email}' confirmado.")
+        janela.destroy()
+        os.system(' '.join(['python', 'acesso.py']))
     else:
-        usuarios[nome] = {"senha": senha}
-        with open("usuarios.json", "w") as f:
-            json.dump(usuarios, f)
-        messagebox.showinfo("Confirmação", f"Usuário '{nome}' registrado com sucesso!")
+        # se for inválido
+        messagebox.showerror("Erro", f"Email {email} não cadastrado")
 
-button = customtkinter.CTkButton(master=janela,text="Enviar", command=enviar)
+
+
+
+button = customtkinter.CTkButton(master=janela,text="Enviar",command=salvar_usuario)
 button.place(x=560,y=320)
 
 def voltar_pagina_acesso():

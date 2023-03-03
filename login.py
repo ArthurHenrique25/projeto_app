@@ -40,23 +40,25 @@ label.place(x=30 ,y=140)
 with open("Users//usuarios.json") as f:
     dados_usuarios = json.load(f)
 
-with open("Users//lembrar_usuario.json") as f:
-    lembrar_usuario = json.load(f)
-
-
 
 def validar_usuario():
+    # carregar o arquivo JSON
+    with open('Users//usuarios.json', 'r') as arquivo:
+        dados_usuarios = json.load(arquivo)
+
+    # extrair os dados do usuário e senha
     usuario = entry1.get()
     senha = entry2.get()
 
-    if usuario in dados_usuarios and senha == dados_usuarios[usuario]["senha"]:
-    # se for válido
+    # verificar se o nome de usuário e senha estão corretos
+    if "nome" in dados_usuarios and "senha" in dados_usuarios and usuario == dados_usuarios["nome"] and senha == dados_usuarios["senha"]:
+        # se for válido
         messagebox.showinfo("Confirmação", f"Usuário '{usuario}' confirmado.")
         janela.destroy()
         os.system(' '.join(['python', 'acesso.py']))
     else:
-    # se for inválido
-        messagebox.showerror("Erro",f"Usuário ou senha {usuario} incorreto")
+        # se for inválido
+        messagebox.showerror("Erro", f"Usuário ou senha {usuario} incorreto")
 
 
 
@@ -70,10 +72,10 @@ entry2.place(x=10,y=220)
 
 # label2 = customtkinter.CTkLabel(master=frame,text="*O campo senha é obrigatorio",text_color="green").place(x=10, y=255)
 
-def salvar_checkbox(estado):
-    # Salvar o estado da checkbox em um arquivo JSON
-    with open("lembrar_usuario.json", "w") as f:
-        json.dump({"lembrar": estado, "usuario": entry1.get(), "senha": entry2.get()}, f)
+# def salvar_checkbox(estado):
+#     # Salvar o estado da checkbox em um arquivo JSON
+#     with open("lembrar_usuario.json", "w") as f:
+#         json.dump({"lembrar": estado, "usuario": entry1.get(), "senha": entry2.get()}, f)
         
 # def lebrarsenha():
 #     with open("usuarios.json") as f:
